@@ -1,0 +1,61 @@
+<div class="code-generator">
+  <div class="generator-header">
+    <h3>💻 Code Generator</h3>
+    <p>Tự động generate HTML, CSS, JavaScript</p>
+  </div>
+
+  <div class="generator-content" *ngIf="generatedCode">
+    <div class="code-tabs">
+      <button
+        class="tab-btn"
+        [class.active]="activeTab === 'html'"
+        (click)="setActiveTab('html')"
+      >
+        HTML
+      </button>
+      <button
+        class="tab-btn"
+        [class.active]="activeTab === 'css'"
+        (click)="setActiveTab('css')"
+      >
+        CSS
+      </button>
+      <button
+        class="tab-btn"
+        [class.active]="activeTab === 'js'"
+        (click)="setActiveTab('js')"
+      >
+        JavaScript
+      </button>
+    </div>
+
+    <div class="code-actions">
+      <button
+        class="action-btn copy-btn"
+        (click)="copyToClipboard(getActiveCode())"
+        title="Copy to clipboard"
+      >
+        📋 Copy
+      </button>
+      <button
+        class="action-btn download-btn"
+        (click)="downloadCode()"
+        title="Download all files"
+      >
+        💾 Download
+      </button>
+    </div>
+
+    <div class="code-display">
+      <pre class="code-block"><code [class]="'language-' + getCodeLanguage()">{{ getActiveCode() }}</code></pre>
+    </div>
+  </div>
+
+  <div class="no-code" *ngIf="!generatedCode">
+    <div class="no-code-content">
+      <div class="no-code-icon">📝</div>
+      <h4>Chưa có code</h4>
+      <p>Thêm elements vào canvas để generate code</p>
+    </div>
+  </div>
+</div>

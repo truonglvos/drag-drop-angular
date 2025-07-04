@@ -1,0 +1,24 @@
+<div class="element-palette">
+  <div class="palette-header">
+    <h3>📦 Elements</h3>
+    <p>Click hoặc kéo thả các element vào canvas</p>
+  </div>
+
+  <div class="palette-content">
+    <div *ngFor="let category of categories" class="category-section">
+      <h4 class="category-title">{{ category }}</h4>
+      <div class="elements-grid">
+        <div
+          *ngFor="let template of getTemplatesByCategory(category)"
+          class="element-item"
+          draggable="true"
+          (dragstart)="onElementDragStart($event, template)"
+          (click)="onElementClick($event, template)"
+        >
+          <div class="element-icon">{{ template.icon }}</div>
+          <div class="element-name">{{ template.name }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

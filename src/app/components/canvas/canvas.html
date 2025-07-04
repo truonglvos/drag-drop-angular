@@ -1,0 +1,112 @@
+<div class="canvas-container" (click)="onCanvasClick($event)">
+  <div class="canvas-header">
+    <h3>🎨 Canvas</h3>
+    <p>Kéo thả elements vào đây để tạo trang web</p>
+    <button class="add-section-btn" (click)="addSection()">
+      ➕ Thêm Section
+    </button>
+  </div>
+
+  <div
+    class="canvas-area"
+    (drop)="onCanvasDrop($event)"
+    (dragover)="onCanvasDragOver($event)"
+  >
+    <!-- Sections -->
+    <div
+      *ngFor="let section of page.sections; trackBy: trackBySectionId"
+      class="canvas-section"
+      [ngStyle]="getSectionStyles(section)"
+      [ngClass]="{ 'selected': section.isSelected }"
+      [attr.data-section-id]="section.id"
+      (click)="onSectionClick(section, $event)"
+      (mousedown)="onSectionMouseDown($event, section)"
+    >
+      <div class="section-header">
+        <h4>{{ section.name }}</h4>
+      </div>
+
+      <div class="section-content">
+        <!-- Elements within this section -->
+        <div
+          *ngFor="let element of section.elements; trackBy: trackByElementId"
+          class="canvas-element"
+          [ngStyle]="getElementStyles(element)"
+          [ngClass]="{ 'selected': element.isSelected }"
+          [attr.data-element-id]="element.id"
+          (click)="onElementClick(element, $event)"
+          (mousedown)="onElementMouseDown($event, element)"
+        >
+          <div class="element-content">
+            <ng-container [ngSwitch]="element.tag">
+              <h1 *ngSwitchCase="'h1'" [attr.id]="getElementAttributes(element)['id']">
+                {{ element.content }}
+              </h1>
+              <h2 *ngSwitchCase="'h2'" [attr.id]="getElementAttributes(element)['id']">
+                {{ element.content }}
+              </h2>
+              <h3 *ngSwitchCase="'h3'" [attr.id]="getElementAttributes(element)['id']">
+                {{ element.content }}
+              </h3>
+              <p *ngSwitchCase="'p'" [attr.id]="getElementAttributes(element)['id']">
+                {{ element.content }}
+              </p>
+              <button *ngSwitchCase="'button'" [attr.id]="getElementAttributes(element)['id']">
+                {{ element.content }}
+              </button>
+              <img *ngSwitchCase="'img'" [attr.id]="getElementAttributes(element)['id']" [src]="element.attributes['src']" [alt]="element.attributes['alt']">
+              <div *ngSwitchDefault [attr.id]="getElementAttributes(element)['id']">
+                {{ element.content }}
+              </div>
+            </ng-container>
+          </div>
+
+          <div class="element-controls" *ngIf="element.isSelected">
+            <button
+              class="delete-btn"
+              (click)="onElementDelete(element.id, $event)"
+              title="Xóa element"
+            >
+              🗑️
+            </button>
+          </div>
+
+          <!-- Element resize handles -->
+          <div class="resize-handles" *ngIf="element.isSelected">
+            <div class="resize-handle nw" (mousedown)="onElementResizeStart($event, element, 'nw')" title="Resize top-left"></div>
+            <div class="resize-handle n" (mousedown)="onElementResizeStart($event, element, 'n')" title="Resize top"></div>
+            <div class="resize-handle ne" (mousedown)="onElementResizeStart($event, element, 'ne')" title="Resize top-right"></div>
+            <div class="resize-handle e" (mousedown)="onElementResizeStart($event, element, 'e')" title="Resize right"></div>
+            <div class="resize-handle se" (mousedown)="onElementResizeStart($event, element, 'se')" title="Resize bottom-right"></div>
+            <div class="resize-handle s" (mousedown)="onElementResizeStart($event, element, 's')" title="Resize bottom"></div>
+            <div class="resize-handle sw" (mousedown)="onElementResizeStart($event, element, 'sw')" title="Resize bottom-left"></div>
+            <div class="resize-handle w" (mousedown)="onElementResizeStart($event, element, 'w')" title="Resize left"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-controls" *ngIf="section.isSelected">
+        <button
+          class="delete-btn"
+          (click)="onSectionDelete(section.id, $event)"
+          title="Xóa section"
+        >
+          🗑️
+        </button>
+      </div>
+
+      <!-- Section resize handles (only bottom for height) -->
+      <div class="section-resize-handles" *ngIf="section.isSelected">
+        <div class="resize-handle s" (mousedown)="onSectionResizeStart($event, section, 's')" title="Resize height"></div>
+      </div>
+    </div>
+
+    <div class="canvas-placeholder" *ngIf="page.sections.length === 0">
+      <div class="placeholder-content">
+        <div class="placeholder-icon">📄</div>
+        <h4>Canvas trống</h4>
+        <p>Nhấn "Thêm Section" để bắt đầu tạo trang web</p>
+      </div>
+    </div>
+  </div>
+</div>

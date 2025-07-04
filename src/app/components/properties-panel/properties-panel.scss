@@ -1,0 +1,144 @@
+.properties-panel {
+  width: 320px;
+  height: 100vh;
+  background: #f8f9fa;
+  border-left: 1px solid #e9ecef;
+  overflow-y: auto;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.panel-header {
+  padding: 20px;
+  background: #fff;
+  border-bottom: 1px solid #e9ecef;
+
+  h3 {
+    margin: 0 0 8px 0;
+    color: #333;
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+
+  p {
+    margin: 0;
+    color: #666;
+    font-size: 0.9rem;
+  }
+}
+
+.panel-content {
+  padding: 16px;
+}
+
+.property-section {
+  margin-bottom: 24px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  h4 {
+    margin: 0 0 12px 0;
+    color: #495057;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+}
+
+.property-group {
+  margin-bottom: 12px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 4px;
+    color: #495057;
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+
+  input, select, textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: border-color 0.2s ease;
+
+    &:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    }
+
+    &::placeholder {
+      color: #adb5bd;
+    }
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 60px;
+  }
+
+  input[type="color"] {
+    height: 40px;
+    padding: 4px;
+    cursor: pointer;
+  }
+
+  select {
+    cursor: pointer;
+    background: #fff;
+  }
+}
+
+.no-selection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 100px);
+  padding: 20px;
+}
+
+.no-selection-content {
+  text-align: center;
+  color: #6c757d;
+
+  .no-selection-icon {
+    font-size: 3rem;
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+
+  h4 {
+    margin: 0 0 8px 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    max-width: 250px;
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .properties-panel {
+    width: 100%;
+    height: auto;
+    max-height: 300px;
+  }
+
+  .no-selection {
+    height: 200px;
+  }
+}

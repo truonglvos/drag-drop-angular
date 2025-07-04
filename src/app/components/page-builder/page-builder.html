@@ -1,0 +1,70 @@
+<div class="page-builder">
+  <!-- Header -->
+  <header class="builder-header">
+    <div class="header-content">
+      <div class="header-left">
+        <h1>🎨 Page Builder</h1>
+        <p>Tạo landing page bằng cách kéo thả elements</p>
+      </div>
+      <div class="header-right">
+        <div class="stats">
+          <span class="stat-item">
+            📦 {{ getElementsCount() }} elements
+          </span>
+        </div>
+        <div class="actions">
+          <button
+            class="btn btn-secondary"
+            (click)="clearCanvas()"
+            title="Xóa tất cả elements"
+          >
+            🗑️ Clear
+          </button>
+          <button
+            class="btn btn-primary"
+            (click)="toggleCodeGenerator()"
+            [class.active]="showCodeGenerator"
+            title="Generate code"
+          >
+            💻 {{ showCodeGenerator ? 'Hide Code' : 'Show Code' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="builder-main">
+    <!-- Element Palette -->
+    <aside class="builder-sidebar left">
+      <app-element-palette></app-element-palette>
+    </aside>
+
+    <!-- Canvas Area -->
+    <section class="builder-canvas">
+      <app-canvas></app-canvas>
+    </section>
+
+    <!-- Properties Panel -->
+    <aside class="builder-sidebar right" *ngIf="!showCodeGenerator">
+      <app-properties-panel></app-properties-panel>
+    </aside>
+
+    <!-- Code Generator -->
+    <aside class="builder-sidebar right" *ngIf="showCodeGenerator">
+      <app-code-generator></app-code-generator>
+    </aside>
+  </main>
+
+  <!-- Footer -->
+  <footer class="builder-footer">
+    <div class="footer-content">
+      <p>Page Builder - Tạo landing page dễ dàng với drag & drop</p>
+      <div class="footer-links">
+        <a href="#" class="footer-link">Hướng dẫn</a>
+        <a href="#" class="footer-link">Templates</a>
+        <a href="#" class="footer-link">Hỗ trợ</a>
+      </div>
+    </div>
+  </footer>
+</div>

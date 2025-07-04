@@ -1,0 +1,196 @@
+<div class="properties-panel">
+  <div class="panel-header">
+    <h3>⚙️ Properties</h3>
+    <p *ngIf="selectedElement">Chỉnh sửa {{ selectedElement.type }}</p>
+    <p *ngIf="selectedSection">Chỉnh sửa Section: {{ selectedSection.name }}</p>
+    <p *ngIf="!selectedElement && !selectedSection">Chọn element hoặc section để chỉnh sửa</p>
+  </div>
+
+  <!-- Element Properties -->
+  <div class="panel-content" *ngIf="selectedElement">
+    <!-- Content Section -->
+    <div class="property-section">
+      <h4>📝 Content</h4>
+      <div class="property-group">
+        <label>Text Content:</label>
+        <textarea
+          [value]="selectedElement.content || ''"
+          (input)="updateContent($event)"
+          placeholder="Nhập nội dung..."
+          rows="3"
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- Dimensions Section -->
+    <div class="property-section">
+      <h4>📏 Dimensions</h4>
+      <div class="property-group">
+        <label>Width:</label>
+        <input
+          type="text"
+          [value]="selectedElement.dimensions.width"
+          (input)="updateElementDimension('width', $event)"
+          placeholder="auto, 100px, 50%..."
+        >
+      </div>
+      <div class="property-group">
+        <label>Height:</label>
+        <input
+          type="text"
+          [value]="selectedElement.dimensions.height"
+          (input)="updateElementDimension('height', $event)"
+          placeholder="auto, 100px, 50%..."
+        >
+      </div>
+    </div>
+
+    <!-- Styles Section -->
+    <div class="property-section">
+      <h4>🎨 Styles</h4>
+      <div class="property-group" *ngFor="let style of getCommonElementStyles()">
+        <label>{{ style.label }}:</label>
+
+        <ng-container [ngSwitch]="style.type">
+          <input
+            *ngSwitchCase="'text'"
+            type="text"
+            [value]="getElementStyleValue(style.property)"
+            (input)="updateElementStyle(style.property, $event)"
+            [placeholder]="style.label"
+          >
+
+          <select
+            *ngSwitchCase="'select'"
+            [value]="getElementStyleValue(style.property)"
+            (change)="updateElementStyle(style.property, $event)"
+          >
+            <option value="">{{ style.label }}</option>
+            <ng-container *ngIf="style.property === 'font-weight'">
+              <option *ngFor="let option of getFontWeightOptions(); trackBy: trackByOption"
+                      [value]="option">
+                {{ option }}
+              </option>
+            </ng-container>
+            <ng-container *ngIf="style.property === 'text-align'">
+              <option *ngFor="let option of getTextAlignOptions(); trackBy: trackByOption"
+                      [value]="option">
+                {{ option }}
+              </option>
+            </ng-container>
+          </select>
+
+          <input
+            *ngSwitchCase="'color'"
+            type="color"
+            [value]="getElementStyleValue(style.property)"
+            (input)="updateElementStyle(style.property, $event)"
+          >
+        </ng-container>
+      </div>
+    </div>
+
+    <!-- Attributes Section -->
+    <div class="property-section" *ngIf="selectedElement.type === 'image'">
+      <h4>🔗 Attributes</h4>
+      <div class="property-group">
+        <label>Image URL:</label>
+        <input
+          type="text"
+          [value]="getElementAttributeValue('src')"
+          (input)="updateElementAttribute('src', $event)"
+          placeholder="https://example.com/image.jpg"
+        >
+      </div>
+      <div class="property-group">
+        <label>Alt Text:</label>
+        <input
+          type="text"
+          [value]="getElementAttributeValue('alt')"
+          (input)="updateElementAttribute('alt', $event)"
+          placeholder="Mô tả hình ảnh"
+        >
+      </div>
+    </div>
+
+    <!-- Button Attributes -->
+    <div class="property-section" *ngIf="selectedElement.type === 'button'">
+      <h4>🔗 Attributes</h4>
+      <div class="property-group">
+        <label>Button Type:</label>
+        <select
+          [value]="getElementAttributeValue('type')"
+          (change)="updateElementAttribute('type', $event)"
+        >
+          <option value="button">Button</option>
+          <option value="submit">Submit</option>
+          <option value="reset">Reset</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section Properties -->
+  <div class="panel-content" *ngIf="selectedSection">
+    <!-- Section Name -->
+    <div class="property-section">
+      <h4>📝 Section Info</h4>
+      <div class="property-group">
+        <label>Section Name:</label>
+        <input
+          type="text"
+          [value]="selectedSection.name"
+          (input)="updateSectionName($event)"
+          placeholder="Section name..."
+        >
+      </div>
+    </div>
+
+    <!-- Dimensions Section -->
+    <div class="property-section">
+      <h4>📏 Dimensions</h4>
+      <div class="property-group">
+        <label>Height:</label>
+        <input
+          type="text"
+          [value]="selectedSection.dimensions.height"
+          (input)="updateSectionDimension('height', $event)"
+          placeholder="300px, 50vh..."
+        >
+      </div>
+    </div>
+
+    <!-- Styles Section -->
+    <div class="property-section">
+      <h4>🎨 Styles</h4>
+      <div class="property-group" *ngFor="let style of getCommonSectionStyles()">
+        <label>{{ style.label }}:</label>
+
+        <ng-container [ngSwitch]="style.type">
+          <input
+            *ngSwitchCase="'text'"
+            type="text"
+            [value]="getSectionStyleValue(style.property)"
+            (input)="updateSectionStyle(style.property, $event)"
+            [placeholder]="style.label"
+          >
+
+          <input
+            *ngSwitchCase="'color'"
+            type="color"
+            [value]="getSectionStyleValue(style.property)"
+            (input)="updateSectionStyle(style.property, $event)"
+          >
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <div class="no-selection" *ngIf="!selectedElement && !selectedSection">
+    <div class="no-selection-content">
+      <div class="no-selection-icon">👆</div>
+      <h4>Chưa chọn element hoặc section</h4>
+      <p>Click vào một element hoặc section trên canvas để chỉnh sửa thuộc tính</p>
+    </div>
+  </div>
+</div>
